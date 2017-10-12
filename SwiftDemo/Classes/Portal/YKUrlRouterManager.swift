@@ -47,7 +47,8 @@ public typealias YKMethodHandler = (_ param:Any?)->(Any?)
 public class YKUrlRouterManager
 {
     // 模块实现的注册router的类名称
-    private static let routerModules:[String] = []
+    private static let routerModules:[String:String] =
+        ["SwiftJSONViewController":"YK://router/swiftjson/SwiftJSONViewController"]
     private static var routerMap:Dictionary<String,[YKRouterHandler]> = [:]
     private static var methodMap:Dictionary<String,YKMethodHandler> = [:]
     
@@ -57,16 +58,12 @@ public class YKUrlRouterManager
         routerMap.removeAll()
         methodMap.removeAll()
         
-        for item in routerModules {
-            guard let registerModule = NSClassFromString(item) else {
+        for (key,item) in routerModules {
+            
+            guard let registerClass = NSClassFromString("SwiftDemo." + key) as? UIViewController.Type else {
                 continue
             }
-            
-            guard let registerClass = registerModule as? YKRegisterRoutersProtocol.Type else {
-                continue
-            }
-            
-            registerClass.registerModuleRouters()
+            registerClass.registerRouterVC(item)
         }
     }
     // MARK:页面Router注册以及调用方法
@@ -378,7 +375,7 @@ fileprivate let kYKDefaultPortalKey = "defaultPortalKeyYK";
 // 默认注册Method的Key
 fileprivate let kYKDefaultMethodKey = "defaultMethodKeyYK";
 // Router默认错误Domain
-fileprivate let kYKRouterErrorDomian = "com.sunlands.router.error";
+fileprivate let kYKRouterErrorDomian = "com.yk.router.error";
 // Method默认错误Domain
-fileprivate let kYKMethodErrorDomian = "com.sunlands.method.error";
+fileprivate let kYKMethodErrorDomian = "com.yk.method.error";
 

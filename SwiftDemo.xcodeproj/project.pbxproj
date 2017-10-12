@@ -12,6 +12,7 @@
 		76C5FFBD1F8FB33300A17E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76C5FFBC1F8FB33300A17E55 /* Assets.xcassets */; };
 		76C5FFC01F8FB33300A17E55 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76C5FFBE1F8FB33300A17E55 /* LaunchScreen.storyboard */; };
 		76C5FFCB1F8FB86C00A17E55 /* YKUrlRouterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C5FFCA1F8FB86C00A17E55 /* YKUrlRouterManager.swift */; };
+		76C5FFCE1F8FBD0A00A17E55 /* SwiftJSONViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C5FFCD1F8FBD0A00A17E55 /* SwiftJSONViewController.swift */; };
 		78DCDCA7276C1B8F3A735105 /* Pods_SwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B428342E2A77BE4703617564 /* Pods_SwiftDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		76C5FFBF1F8FB33300A17E55 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76C5FFC11F8FB33300A17E55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76C5FFCA1F8FB86C00A17E55 /* YKUrlRouterManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YKUrlRouterManager.swift; sourceTree = "<group>"; };
+		76C5FFCD1F8FBD0A00A17E55 /* SwiftJSONViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftJSONViewController.swift; sourceTree = "<group>"; };
 		B428342E2A77BE4703617564 /* Pods_SwiftDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 		76C5FFC81F8FB80700A17E55 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				76C5FFCC1F8FBCF200A17E55 /* SwiftJSON */,
 				76C5FFC91F8FB82D00A17E55 /* Portal */,
 			);
 			path = Classes;
@@ -102,6 +105,14 @@
 				76C5FFCA1F8FB86C00A17E55 /* YKUrlRouterManager.swift */,
 			);
 			path = Portal;
+			sourceTree = "<group>";
+		};
+		76C5FFCC1F8FBCF200A17E55 /* SwiftJSON */ = {
+			isa = PBXGroup;
+			children = (
+				76C5FFCD1F8FBD0A00A17E55 /* SwiftJSONViewController.swift */,
+			);
+			path = SwiftJSON;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -244,6 +255,7 @@
 			files = (
 				76C5FFB81F8FB33300A17E55 /* MainViewController.swift in Sources */,
 				76C5FFCB1F8FB86C00A17E55 /* YKUrlRouterManager.swift in Sources */,
+				76C5FFCE1F8FBD0A00A17E55 /* SwiftJSONViewController.swift in Sources */,
 				76C5FFB61F8FB33300A17E55 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
