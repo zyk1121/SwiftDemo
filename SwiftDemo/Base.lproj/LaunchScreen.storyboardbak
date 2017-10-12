@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="EHf-IW-A2E">
+            <objects>
+                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Llm-lL-Icb"/>
+                        <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1hM-HN-eST" userLabel="AppVersion">
+                                <rect key="frame" x="79" y="607.5" width="217" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="©2017尚德机构版权所有" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDw-14-OOY">
+                                <rect key="frame" x="41" y="632.5" width="293" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_front" highlightedImage="launch_front" translatesAutoresizingMaskIntoConstraints="NO" id="b6J-Ie-e14" userLabel="launch_front">
+                                <rect key="frame" x="129" y="318" width="116" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="x7j-JY-jxF"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_logo" translatesAutoresizingMaskIntoConstraints="NO" id="ioj-Fx-fvc">
+                                <rect key="frame" x="129" y="197" width="116" height="113"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="1hM-HN-eST" secondAttribute="trailing" constant="63" id="3mf-DI-UBH"/>
+                            <constraint firstItem="b6J-Ie-e14" firstAttribute="leading" secondItem="ioj-Fx-fvc" secondAttribute="leading" id="5Wc-8c-r04"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="rDw-14-OOY" secondAttribute="bottom" constant="20" id="9Ih-WW-MD9"/>
+                            <constraint firstItem="ioj-Fx-fvc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-80" id="Cdd-xg-FLl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="rDw-14-OOY" secondAttribute="trailing" constant="25" id="MhB-fR-ryn"/>
+                            <constraint firstItem="b6J-Ie-e14" firstAttribute="trailing" secondItem="ioj-Fx-fvc" secondAttribute="trailing" id="QkS-Pf-nXw"/>
+                            <constraint firstItem="b6J-Ie-e14" firstAttribute="top" secondItem="ioj-Fx-fvc" secondAttribute="bottom" constant="8" id="ch5-Re-onq"/>
+                            <constraint firstItem="ioj-Fx-fvc" firstAttribute="centerX" secondItem="1hM-HN-eST" secondAttribute="centerX" id="fts-sx-anM" userLabel="launch_logo.centerX = View.centerX"/>
+                            <constraint firstItem="rDw-14-OOY" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="25" id="gxi-aY-cwp"/>
+                            <constraint firstItem="1hM-HN-eST" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="63" id="rPj-BO-zNb"/>
+                            <constraint firstItem="rDw-14-OOY" firstAttribute="top" secondItem="1hM-HN-eST" secondAttribute="bottom" constant="10" id="ree-2N-mhB"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="launch_front" width="116" height="17"/>
+        <image name="launch_logo" width="116" height="113"/>
+    </resources>
+</document>
