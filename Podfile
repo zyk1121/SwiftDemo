@@ -10,5 +10,8 @@ target 'SwiftDemo' do
     pod 'SnapKit', '~> 3.0.0'
     pod 'YYText',  '~> 1.0.7'
     pod 'Alamofire', '~> 4.1.0'
+#    pod 'Moya-ObjectMapper', '~> 2.4'
+#    pod 'Moya/RxSwift'
+    pod 'ObjectMapper', '~> 2.2.9'
 
 end
