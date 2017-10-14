@@ -7,5 +7,8 @@ target 'SwiftDemo' do
 	use_frameworks!
 	pod 'RxSwift', '~> 3.6.1'
 	pod 'RxCocoa', '~> 3.6.1'
+    pod 'SnapKit', '~> 3.0.0'
+    pod 'YYText',  '~> 1.0.7'
+    pod 'Alamofire', '~> 4.1.0'
 
 end

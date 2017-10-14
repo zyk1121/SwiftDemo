@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SwiftJSONViewController: UIViewController {
+class SwiftJSONViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
