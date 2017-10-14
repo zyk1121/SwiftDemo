@@ -48,7 +48,8 @@ public class YKUrlRouterManager
 {
     // 模块实现的注册router的类名称
     private static let routerModules:[String:String] =
-        ["SwiftJSONViewController":"YK://router/swiftjson/SwiftJSONViewController"]
+        ["SwiftJSONViewController":"YK://router/swiftjson/SwiftJSONViewController",
+         "AlamofireViewController":"YK://router/alamofire/AlamofireViewController"]
     private static var routerMap:Dictionary<String,[YKRouterHandler]> = [:]
     private static var methodMap:Dictionary<String,YKMethodHandler> = [:]
     
