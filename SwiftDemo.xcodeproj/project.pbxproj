@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		761FBF0E1F91BC8C00075EDD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FBF0D1F91BC8C00075EDD /* BaseViewController.swift */; };
 		761FBF111F91C3D300075EDD /* AlamofireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FBF101F91C3D300075EDD /* AlamofireViewController.swift */; };
+		76B29BBD1F93160400415A0E /* YYTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B29BBC1F93160400415A0E /* YYTextViewController.swift */; };
 		76C5FFB61F8FB33300A17E55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C5FFB51F8FB33300A17E55 /* AppDelegate.swift */; };
 		76C5FFB81F8FB33300A17E55 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C5FFB71F8FB33300A17E55 /* MainViewController.swift */; };
 		76C5FFBD1F8FB33300A17E55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76C5FFBC1F8FB33300A17E55 /* Assets.xcassets */; };
@@ -23,6 +24,7 @@
 		5A25C575B5ECD15E24AB1C53 /* Pods-SwiftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		761FBF0D1F91BC8C00075EDD /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		761FBF101F91C3D300075EDD /* AlamofireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireViewController.swift; sourceTree = "<group>"; };
+		76B29BBC1F93160400415A0E /* YYTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YYTextViewController.swift; sourceTree = "<group>"; };
 		76C5FFB21F8FB33300A17E55 /* SwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76C5FFB51F8FB33300A17E55 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		76C5FFB71F8FB33300A17E55 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -71,6 +73,14 @@
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
+		76B29BBB1F9315F300415A0E /* YYText */ = {
+			isa = PBXGroup;
+			children = (
+				76B29BBC1F93160400415A0E /* YYTextViewController.swift */,
+			);
+			path = YYText;
+			sourceTree = "<group>";
+		};
 		76C5FFA91F8FB33300A17E55 = {
 			isa = PBXGroup;
 			children = (
@@ -108,6 +118,7 @@
 				76C5FFCF1F8FC09F00A17E55 /* Base */,
 				76C5FFCC1F8FBCF200A17E55 /* SwiftJSON */,
 				761FBF0F1F91C3B600075EDD /* Alamofire */,
+				76B29BBB1F9315F300415A0E /* YYText */,
 				76C5FFC91F8FB82D00A17E55 /* Portal */,
 			);
 			path = Classes;
@@ -281,6 +292,7 @@
 				76C5FFCB1F8FB86C00A17E55 /* YKUrlRouterManager.swift in Sources */,
 				76C5FFCE1F8FBD0A00A17E55 /* SwiftJSONViewController.swift in Sources */,
 				76C5FFB61F8FB33300A17E55 /* AppDelegate.swift in Sources */,
+				76B29BBD1F93160400415A0E /* YYTextViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
