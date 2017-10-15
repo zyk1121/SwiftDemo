@@ -12,11 +12,13 @@ import SnapKit
 class MainViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {
     var itemKeys = ["01-Alamofire",
                     "02-SwiftJSON",
-                    "03-YYText"
+                    "03-YYText",
+                    "04-RxSwift"
                     ]
     var items:[String:String] = ["01-Alamofire":"YK://router/alamofire/AlamofireViewController",
                                  "02-SwiftJSON":"YK://router/swiftjson/SwiftJSONViewController",
                                  "03-YYText":"YK://router/yytext/YYTextViewController",
+                                 "04-RxSwift":"YK://router/rxswift/RxSwiftViewController",
                                  ]
     var tableView:UITableView?
     

@@ -289,7 +289,7 @@ class AlamofireViewController: BaseViewController {
                 
                 
                 let w = Mapper<Weather>().map(JSON: json)
-                w?.weather?.city
+//                w?.weather?.city
                 
                 /*
                 for item in (0 ..< 10000) {

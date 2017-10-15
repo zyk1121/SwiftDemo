@@ -146,6 +146,86 @@ class YYTextViewController: BaseViewController {
          链接：http://www.jianshu.com/p/60aee32ade55
          來源：简书
          著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+         
+         
+         
+         
+         YYLabel添加tap事件
+         
+         实现代码
+         
+         YYLabel *label = [YYLabel new];
+         label.highlightTapAction = ^(UIView *containerView, NSAttributedString *text, NSRange range, CGRect rect) {
+         if ([self.clickDelegate respondsToSelector:@selector(label:tapHighlight:inRange:)])
+         {
+         YYTextHighlight *highlight = [text yy_attribute:YYTextHighlightAttributeName atIndex:range.location];
+         [self.clickDelegate label:(YYLabel *)containerView tapHighlight:highlight inRange:range];
+         }
+         };
+         label.frame = CGRectMake(0, 0, SCREEN_WIDTH, layout.textBoundingSize.height);
+         label.textAlignment = NSTextAlignmentCenter;
+         label.textVerticalAlignment = YYTextVerticalAlignmentCenter;
+         label.numberOfLines = 0;
+         label.backgroundColor = RGBCOLOR(246, 246, 246);
+         label.textLayout = layout;
+         [self addSubview:label];
+         这里有个属性highlightTapAction就是用来处理点击高亮文字事件的，在这里，我定义了一个delegate：
+         
+         @protocol YYHiglightTextClickDelegate <NSObject>
+         
+         - (void)label:(YYLabel *)label
+         tapHighlight:(YYTextHighlight *)highlight
+         inRange:(NSRange)textRange;
+         
+         @end
+         只要实现这个delegate就能方便的处理点击各种高亮文字的事件。YYTextHighlight里面包含了一个userInfo，包含了很多需要处理的信息，通过它，能够很容易的处理点击事件，我这里在UIViewController中做了一个实现：
+         
+         #pragma mark - YYHiglightTextClickDelegate
+         - (void)label:(YYLabel *)label
+         tapHighlight:(YYTextHighlight *)highlight
+         inRange:(NSRange)textRange
+         {
+         NSDictionary *info = highlight.userInfo;
+         LinkType linkType = [info[@"linkType"] integerValue];
+         NSString *linkValue = info[@"linkValue"];
+         switch (linkType) {
+         case LinkTypeAt:
+         {
+         [AppUtility showMessage:[NSString stringWithFormat:@"选中at：%@",linkValue]];
+         }
+         break;
+         case LinkTypeTopic:
+         {
+         [AppUtility showMessage:[NSString stringWithFormat:@"选中话题：%@",linkValue]];
+         }
+         break;
+         case LinkTypeEmail:
+         {
+         [AppUtility showMessage:[NSString stringWithFormat:@"选中email：%@",linkValue]];
+         }
+         break;
+         case LinkTypeURL:
+         {
+         [AppUtility showMessage:[NSString stringWithFormat:@"选中url：%@",linkValue]];
+         }
+         break;
+         case LinkTypePhoneNum:
+         {
+         [AppUtility showMessage:[NSString stringWithFormat:@"选中phone：%@",linkValue]];
+         }
+         break;
+         default:
+         break;
+         }
+         }
+         我在userInfo中传入了两对键值：
+         
+         作者：0o冻僵的企鹅o0
+         链接：http://www.jianshu.com/p/60aee32ade55
+         來源：简书
+         著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+         
+         
         
         */
         

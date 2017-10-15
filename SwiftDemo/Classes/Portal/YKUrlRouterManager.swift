@@ -50,7 +50,8 @@ public class YKUrlRouterManager
     private static let routerModules:[String:String] =
         ["SwiftJSONViewController":"YK://router/swiftjson/SwiftJSONViewController",
          "AlamofireViewController":"YK://router/alamofire/AlamofireViewController",
-         "YYTextViewController":"YK://router/yytext/YYTextViewController"]
+         "YYTextViewController":"YK://router/yytext/YYTextViewController",
+         "RxSwiftViewController":"YK://router/rxswift/RxSwiftViewController"]
     private static var routerMap:Dictionary<String,[YKRouterHandler]> = [:]
     private static var methodMap:Dictionary<String,YKMethodHandler> = [:]
     
