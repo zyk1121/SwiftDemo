@@ -13,5 +13,6 @@ target 'SwiftDemo' do
 #    pod 'Moya-ObjectMapper', '~> 2.4'
 #    pod 'Moya/RxSwift'
     pod 'ObjectMapper', '~> 2.2.9'
+    pod 'SwiftyJSON'
 
 end

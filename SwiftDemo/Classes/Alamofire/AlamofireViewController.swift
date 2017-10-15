@@ -287,8 +287,16 @@ class AlamofireViewController: BaseViewController {
                 
                 // 官方文档：https://github.com/Hearst-DD/ObjectMapper
                 
+                
                 let w = Mapper<Weather>().map(JSON: json)
                 w?.weather?.city
+                
+                /*
+                for item in (0 ..< 10000) {
+                    let dd = "\(w?.weather?.city ?? "") 的天气：\(w?.weather?.weather ?? "") 更新时间：\(w?.weather?.pTime ?? "")"
+                }
+                */
+                
 //                print(w)
                 DispatchQueue.main.async {
                     self.label.text = "\(w?.weather?.city ?? "") 的天气：\(w?.weather?.weather ?? "") 更新时间：\(w?.weather?.pTime ?? "")"
