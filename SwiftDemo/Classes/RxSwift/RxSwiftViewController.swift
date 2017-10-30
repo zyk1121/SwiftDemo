@@ -11,6 +11,7 @@ import YYText
 import WebKit
 import CoreText
 import TFHpple
+import SnapKit
 
 enum HTMLType {
     case Text
@@ -40,10 +41,67 @@ class HTMImageData: HTMLData {
     
 }
 
+class YKBlankTextField:UITextField {
+    
+    var bottomLine = UIView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    func setupUI()
+    {
+        bottomLine.backgroundColor = UIColor.red
+        self.addSubview(bottomLine)
+        updateConstraintsIfNeeded()
+    }
+//    override var isSelected: Bool {
+//        willSet {
+//            print(self)
+//        }
+//    }
+    
+    override var isEnabled: Bool {
+        willSet {
+            if newValue {
+                bottomLine.backgroundColor = UIColor.red
+            } else {
+                bottomLine.backgroundColor = UIColor.lightGray
+            }
+            
+        }
+    }
+    
+    override func becomeFirstResponder() -> Bool {
+        bottomLine.backgroundColor = UIColor.blue
+        return super.becomeFirstResponder()
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        bottomLine.backgroundColor = UIColor.red
+        return super.resignFirstResponder()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func updateConstraints() {
+        bottomLine.snp.remakeConstraints { (make) in
+            make.left.right.equalTo(self)
+            make.height.equalTo(1)
+            make.bottom.equalTo(self)
+        }
+        super.updateConstraints()
+    }
+}
+
 class YKHTMLData {
     var attributeString:NSAttributedString = NSAttributedString()
     var imageViews:[UIImageView] = []
     var blankViews:[UITextField] = []
+    var fontSize:CGFloat = 16.0 // 默认字体大小
     init(_ htmlString:String) {
         attributeString = convertHTML2AttriString(htmlString: htmlString)
     }
@@ -178,13 +236,16 @@ class YKHTMLData {
             // 填空题（<img）,无需宽高
             //            print("填空题")
             
-            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+            let textField = YKBlankTextField(frame: CGRect(x: 0, y: 0, width: 100, height: fontSize + 2.0))
             textField.placeholder = "请输入正文"
             textField.text = "123"
             textField.isUserInteractionEnabled = true
-            textField.borderStyle = .roundedRect
-            textField.backgroundColor = UIColor.blue
-            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            textField.borderStyle = .none
+            textField.textAlignment = .center
+            textField.font = UIFont.systemFont(ofSize: fontSize)
+            textField.backgroundColor = UIColor.clear
+            textField.isEnabled = false
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: fontSize), alignment: YYTextVerticalAlignment.center)
             blankViews.append(textField)
             //            let highlight = YYTextHighlight()
             //            highlight.tapAction = {(containerView, text, range, rect) in
@@ -207,7 +268,7 @@ class YKHTMLData {
             
             let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
             imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
-            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: fontSize), alignment: YYTextVerticalAlignment.center)
             imageViews.append(imageView)
             retMutableAttriString.append(attachment)
         }
@@ -219,18 +280,27 @@ class YKHTMLData {
         let retMutableAttriString = NSMutableAttributedString(string: "")
         let temp = node
         let strTemp = NSMutableAttributedString(string: temp.allContents(), attributes: nil)
-        strTemp.yy_font  = UIFont.systemFont(ofSize: 17.0)
+        strTemp.yy_font  = UIFont.systemFont(ofSize: fontSize)
         // 加粗、斜体、下划线
         if (temp.rawContents().contains("<b>")) {
-            strTemp.yy_font  = UIFont.boldSystemFont(ofSize: 17.0)
-        }
-        if (temp.rawContents().contains("<i>")) {
-            let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
-            strTemp.yy_textGlyphTransform = matrix
+            strTemp.yy_font  = UIFont.boldSystemFont(ofSize: fontSize)
         }
         if (temp.rawContents().contains("<u>")) {
             strTemp.yy_underlineStyle = NSUnderlineStyle.styleSingle
         }
+        if (temp.rawContents().contains("<i>")) {
+            let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
+            strTemp.yy_textGlyphTransform = matrix
+//            strTemp.yy_textBackgroundBorder = YYTextBorder(lineStyle: YYTextLineStyle.single, lineWidth: 1.0, stroke: UIColor.red)
+//            strTemp.yy_textGlyphTransform = CGAffineTransform(rotationAngle: -0.1)
+            if (temp.rawContents().contains("<u>")) {
+                  strTemp.yy_setTextUnderline(YYTextDecoration.init(style: YYTextLineStyle.single), range: NSRange.init(location: 0, length: strTemp.string.characters.count))
+            }
+          
+        }
+        
+       
+       
         // 默认居左
         if temp.rawContents().contains("text-align: left;") {
             strTemp.yy_alignment = NSTextAlignment.left
@@ -382,7 +452,7 @@ class RxSwiftViewController: BaseViewController {
             // 填空题（<img）,无需宽高
 //            print("填空题")
             
-            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+            let textField = YKBlankTextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
             textField.placeholder = "请输入正文"
             textField.text = "123"
             textField.isUserInteractionEnabled = true
