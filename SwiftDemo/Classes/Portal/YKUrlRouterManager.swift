@@ -46,11 +46,12 @@ public typealias YKMethodHandler = (_ param:Any?)->(Any?)
 // MARK: - 统一的页面跳转方式
 public class YKUrlRouterManager
 {
+//     "YYTextViewController":"YK://router/yytext/YYTextViewController",
     // 模块实现的注册router的类名称
     private static let routerModules:[String:String] =
         ["SwiftJSONViewController":"YK://router/swiftjson/SwiftJSONViewController",
          "AlamofireViewController":"YK://router/alamofire/AlamofireViewController",
-         "YYTextViewController":"YK://router/yytext/YYTextViewController",
+         "RxSwiftViewController2":"YK://router/yytext/YYTextViewController",
          "RxSwiftViewController":"YK://router/rxswift/RxSwiftViewController"]
     private static var routerMap:Dictionary<String,[YKRouterHandler]> = [:]
     private static var methodMap:Dictionary<String,YKMethodHandler> = [:]

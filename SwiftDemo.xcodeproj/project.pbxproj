@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		761FBF0E1F91BC8C00075EDD /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FBF0D1F91BC8C00075EDD /* BaseViewController.swift */; };
 		761FBF111F91C3D300075EDD /* AlamofireViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FBF101F91C3D300075EDD /* AlamofireViewController.swift */; };
+		7620C0E91FA1C70A00CBD930 /* 测试题库.html in Resources */ = {isa = PBXBuildFile; fileRef = 7620C0E81FA1C70A00CBD930 /* 测试题库.html */; };
+		7620C0EB1FA204DB00CBD930 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620C0EA1FA204DA00CBD930 /* CoreText.framework */; };
+		7620C0F81FA4CA3D00CBD930 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620C0F71FA4CA3D00CBD930 /* libxml2.tbd */; };
+		7620C0FF1FA4CB1200CBD930 /* HTMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 7620C0FC1FA4CB1200CBD930 /* HTMLNode.m */; };
+		7620C1001FA4CB1200CBD930 /* HTMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7620C0FE1FA4CB1200CBD930 /* HTMLParser.m */; };
 		76B29BBD1F93160400415A0E /* YYTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B29BBC1F93160400415A0E /* YYTextViewController.swift */; };
 		76B29BE31F932D9400415A0E /* RxSwiftViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B29BE21F932D9400415A0E /* RxSwiftViewController.swift */; };
 		76C5FFB61F8FB33300A17E55 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C5FFB51F8FB33300A17E55 /* AppDelegate.swift */; };
@@ -25,6 +30,14 @@
 		5A25C575B5ECD15E24AB1C53 /* Pods-SwiftDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftDemo/Pods-SwiftDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		761FBF0D1F91BC8C00075EDD /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		761FBF101F91C3D300075EDD /* AlamofireViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlamofireViewController.swift; sourceTree = "<group>"; };
+		7620C0E81FA1C70A00CBD930 /* 测试题库.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "测试题库.html"; sourceTree = "<group>"; };
+		7620C0EA1FA204DA00CBD930 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		7620C0EC1FA3257A00CBD930 /* SwiftDemo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SwiftDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		7620C0F71FA4CA3D00CBD930 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		7620C0FB1FA4CB1200CBD930 /* HTMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLNode.h; sourceTree = "<group>"; };
+		7620C0FC1FA4CB1200CBD930 /* HTMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLNode.m; sourceTree = "<group>"; };
+		7620C0FD1FA4CB1200CBD930 /* HTMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HTMLParser.h; sourceTree = "<group>"; };
+		7620C0FE1FA4CB1200CBD930 /* HTMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HTMLParser.m; sourceTree = "<group>"; };
 		76B29BBC1F93160400415A0E /* YYTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YYTextViewController.swift; sourceTree = "<group>"; };
 		76B29BE21F932D9400415A0E /* RxSwiftViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxSwiftViewController.swift; sourceTree = "<group>"; };
 		76C5FFB21F8FB33300A17E55 /* SwiftDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,6 +56,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7620C0F81FA4CA3D00CBD930 /* libxml2.tbd in Frameworks */,
+				7620C0EB1FA204DB00CBD930 /* CoreText.framework in Frameworks */,
 				78DCDCA7276C1B8F3A735105 /* Pods_SwiftDemo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -53,6 +68,8 @@
 		24CC64C1F482EDB91DB91974 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7620C0F71FA4CA3D00CBD930 /* libxml2.tbd */,
+				7620C0EA1FA204DA00CBD930 /* CoreText.framework */,
 				B428342E2A77BE4703617564 /* Pods_SwiftDemo.framework */,
 			);
 			name = Frameworks;
@@ -75,6 +92,26 @@
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
+		7620C0F91FA4CB1200CBD930 /* Third */ = {
+			isa = PBXGroup;
+			children = (
+				7620C0FA1FA4CB1200CBD930 /* HtmlParser */,
+			);
+			name = Third;
+			path = Classes/Third;
+			sourceTree = "<group>";
+		};
+		7620C0FA1FA4CB1200CBD930 /* HtmlParser */ = {
+			isa = PBXGroup;
+			children = (
+				7620C0FB1FA4CB1200CBD930 /* HTMLNode.h */,
+				7620C0FC1FA4CB1200CBD930 /* HTMLNode.m */,
+				7620C0FD1FA4CB1200CBD930 /* HTMLParser.h */,
+				7620C0FE1FA4CB1200CBD930 /* HTMLParser.m */,
+			);
+			path = HtmlParser;
+			sourceTree = "<group>";
+		};
 		76B29BBB1F9315F300415A0E /* YYText */ = {
 			isa = PBXGroup;
 			children = (
@@ -86,6 +123,7 @@
 		76B29BBE1F932D8200415A0E /* RxSwift */ = {
 			isa = PBXGroup;
 			children = (
+				7620C0E81FA1C70A00CBD930 /* 测试题库.html */,
 				76B29BE21F932D9400415A0E /* RxSwiftViewController.swift */,
 			);
 			path = RxSwift;
@@ -114,10 +152,12 @@
 			children = (
 				76C5FFC81F8FB80700A17E55 /* Classes */,
 				76C5FFB51F8FB33300A17E55 /* AppDelegate.swift */,
+				7620C0F91FA4CB1200CBD930 /* Third */,
 				76C5FFB71F8FB33300A17E55 /* MainViewController.swift */,
 				76C5FFBC1F8FB33300A17E55 /* Assets.xcassets */,
 				76C5FFBE1F8FB33300A17E55 /* LaunchScreen.storyboard */,
 				76C5FFC11F8FB33300A17E55 /* Info.plist */,
+				7620C0EC1FA3257A00CBD930 /* SwiftDemo-Bridging-Header.h */,
 			);
 			path = SwiftDemo;
 			sourceTree = "<group>";
@@ -196,6 +236,7 @@
 					76C5FFB11F8FB33300A17E55 = {
 						CreatedOnToolsVersion = 8.3.2;
 						DevelopmentTeam = VMTN98C772;
+						LastSwiftMigration = 0830;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -223,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7620C0E91FA1C70A00CBD930 /* 测试题库.html in Resources */,
 				76C5FFC01F8FB33300A17E55 /* LaunchScreen.storyboard in Resources */,
 				76C5FFBD1F8FB33300A17E55 /* Assets.xcassets in Resources */,
 			);
@@ -302,9 +344,11 @@
 				76C5FFB81F8FB33300A17E55 /* MainViewController.swift in Sources */,
 				76C5FFCB1F8FB86C00A17E55 /* YKUrlRouterManager.swift in Sources */,
 				76B29BE31F932D9400415A0E /* RxSwiftViewController.swift in Sources */,
+				7620C0FF1FA4CB1200CBD930 /* HTMLNode.m in Sources */,
 				76C5FFCE1F8FBD0A00A17E55 /* SwiftJSONViewController.swift in Sources */,
 				76C5FFB61F8FB33300A17E55 /* AppDelegate.swift in Sources */,
 				76B29BBD1F93160400415A0E /* YYTextViewController.swift in Sources */,
+				7620C1001FA4CB1200CBD930 /* HTMLParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -420,12 +464,15 @@
 			baseConfigurationReference = 5A25C575B5ECD15E24AB1C53 /* Pods-SwiftDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = VMTN98C772;
 				INFOPLIST_FILE = SwiftDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunland.SwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftDemo/SwiftDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -435,12 +482,14 @@
 			baseConfigurationReference = 4B3B96090E185B0B64CEF256 /* Pods-SwiftDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				DEVELOPMENT_TEAM = VMTN98C772;
 				INFOPLIST_FILE = SwiftDemo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sunland.SwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "SwiftDemo/SwiftDemo-Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
