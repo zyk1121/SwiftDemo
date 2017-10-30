@@ -42,6 +42,7 @@ class HTMImageData: HTMLData {
 
 class RxSwiftViewController: BaseViewController {
 
+    var textF:UITextField?
 
     // 判断是否是HTML(题库试题答案等)字符串 "<p>" 开始
     func isHTMLString(htmlString:String)->Bool {
@@ -180,6 +181,7 @@ class RxSwiftViewController: BaseViewController {
             textField.borderStyle = .roundedRect
             textField.backgroundColor = UIColor.blue
             let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            textF = textField
 //            let highlight = YYTextHighlight()
 //            highlight.tapAction = {(containerView, text, range, rect) in
 //            }
@@ -522,6 +524,11 @@ class RxSwiftViewController: BaseViewController {
         self.view.addSubview(myLabel)
         myLabel.layoutIfNeeded()
      
+        
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5.0) {
+            self.textF?.text = "abcdef"
+        }
         
 //        print(arr)
         
