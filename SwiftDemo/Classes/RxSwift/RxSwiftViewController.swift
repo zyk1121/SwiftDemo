@@ -40,6 +40,214 @@ class HTMImageData: HTMLData {
     
 }
 
+class YKHTMLData {
+    var attributeString:NSAttributedString = NSAttributedString()
+    var imageViews:[UIImageView] = []
+    var blankViews:[UITextField] = []
+    init(_ htmlString:String) {
+        attributeString = convertHTML2AttriString(htmlString: htmlString)
+    }
+    
+    // 判断是否是HTML(题库试题答案等)字符串 "<p>" 开始
+    func isHTMLString(htmlString:String)->Bool {
+        return htmlString.hasPrefix("<p>")
+    }
+    
+    // HTML转属性字符串
+    func convertHTML2AttriString(htmlString:String)->NSAttributedString {
+        if (!isHTMLString(htmlString: htmlString)) {
+            return NSAttributedString(string:htmlString)
+        }
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        guard let htmlParser = try? HTMLParser(string: htmlString),
+            let bodyNode = htmlParser.body(),
+            let inputNodes = bodyNode.findChildTags("p") as? [HTMLNode] else {
+                return retMutableAttriString
+        }
+        
+        for rootNode in inputNodes {
+            let rootStr = convertHTMLNode2AttriString(node: rootNode)
+            // 默认居左
+            if rootNode.rawContents().contains("text-align: left;") {
+                rootStr.yy_alignment = NSTextAlignment.left
+            }
+            if rootNode.rawContents().contains("text-align: center;") {
+                rootStr.yy_alignment = NSTextAlignment.center
+            }
+            if rootNode.rawContents().contains("text-align: right;") {
+                rootStr.yy_alignment = NSTextAlignment.right
+            }
+            retMutableAttriString.append(rootStr)
+            retMutableAttriString.append(NSAttributedString(string:"\n"))
+        }
+        
+        return retMutableAttriString
+    }
+    
+    // HTMLNode 2 String
+    func convertHTMLNode2AttriString(node:HTMLNode)->NSMutableAttributedString {
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        let nodeCount = node.children().count
+        if (nodeCount == 0) {
+            return retMutableAttriString
+        }
+        if nodeCount == 1 {
+            // 解析当前节点数据
+            // 空
+            if node.rawContents().characters.count <= 8 {
+                let temp = node
+                if temp.rawContents() == nil{
+                    return retMutableAttriString
+                }
+                if (temp.rawContents().contains("<br")) {
+                    retMutableAttriString.append(NSAttributedString(string:"\n"))
+                }
+                if (temp.rawContents().hasPrefix("<")) {
+                    return retMutableAttriString
+                }
+                let tempStr = temp.allContents()
+                if (tempStr == nil) {
+                    return retMutableAttriString
+                }
+                if (tempStr!.characters.count <= 0 || tempStr! == "" || tempStr!.hasPrefix("\n")) {
+                    return retMutableAttriString
+                }
+                retMutableAttriString.append(NSAttributedString(string:tempStr!))
+                return retMutableAttriString
+            }
+            // 注释
+            if node.rawContents().contains("<!--") {
+                return retMutableAttriString
+            }
+            // 图片
+            if node.rawContents().contains("<img") {
+                let imgAttriText = convertHTMLImageNode2AttriString(node: node)
+                retMutableAttriString.append(imgAttriText)
+            } else {
+                // 文本
+                let textAttri = convertHTMLTextNode2AttriString(node: node)
+                retMutableAttriString.append(textAttri)
+            }
+        } else {
+            for item in node.children() {
+                let temp = item as! HTMLNode
+                // 空
+                if temp.rawContents().characters.count <= 8 {
+                    if temp.rawContents() == nil{
+                        continue
+                    }
+                    if (temp.rawContents().contains("<br")) {
+                        retMutableAttriString.append(NSAttributedString(string:"\n"))
+                    }
+                    if (temp.rawContents().hasPrefix("<")) {
+                        continue
+                    }
+                    let tempStr = temp.allContents()
+                    if (tempStr == nil) {
+                        continue
+                    }
+                    if (tempStr!.characters.count <= 0 || tempStr! == "" || tempStr!.hasPrefix("\n")) {
+                        continue
+                    }
+                }
+                // 注释
+                if temp.rawContents().contains("<!--") {
+                    continue
+                }
+                // 图片
+                if temp.rawContents().contains("<img") {
+                    let imgAttriText = convertHTMLImageNode2AttriString(node: temp)
+                    retMutableAttriString.append(imgAttriText)
+                } else {
+                    // 文本
+                    let textAttri = convertHTMLTextNode2AttriString(node: temp)
+                    retMutableAttriString.append(textAttri)
+                }
+            }
+        }
+        return retMutableAttriString
+    }
+    
+    func convertHTMLImageNode2AttriString(node:HTMLNode)->NSAttributedString {
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        if !node.rawContents().contains("<img") {
+            return retMutableAttriString
+        }
+        //        print(node.rawContents())
+        if node.rawContents().contains("__blank__placeholder") {
+            // 填空题（<img）,无需宽高
+            //            print("填空题")
+            
+            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+            textField.placeholder = "请输入正文"
+            textField.text = "123"
+            textField.isUserInteractionEnabled = true
+            textField.borderStyle = .roundedRect
+            textField.backgroundColor = UIColor.blue
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            blankViews.append(textField)
+            //            let highlight = YYTextHighlight()
+            //            highlight.tapAction = {(containerView, text, range, rect) in
+            //            }
+            //            attachment.yy_setTextHighlight(highlight, range: attachment.yy_rangeOfAll())
+            retMutableAttriString.append(attachment)
+        } else {
+            let temp = node
+            if !node.rawContents().contains("width") {
+                return retMutableAttriString
+            }
+            if !node.rawContents().contains("height") {
+                return retMutableAttriString
+            }
+            if !node.rawContents().contains("src") {
+                return retMutableAttriString
+            }
+            let width:CGFloat = CGFloat((temp.getAttributeNamed("width") as NSString).floatValue)
+            let height:CGFloat = CGFloat((temp.getAttributeNamed("height") as NSString).floatValue)
+            
+            let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
+            imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            imageViews.append(imageView)
+            retMutableAttriString.append(attachment)
+        }
+        
+        return retMutableAttriString
+    }
+    
+    func convertHTMLTextNode2AttriString(node:HTMLNode)->NSAttributedString {
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        let temp = node
+        let strTemp = NSMutableAttributedString(string: temp.allContents(), attributes: nil)
+        strTemp.yy_font  = UIFont.systemFont(ofSize: 17.0)
+        // 加粗、斜体、下划线
+        if (temp.rawContents().contains("<b>")) {
+            strTemp.yy_font  = UIFont.boldSystemFont(ofSize: 17.0)
+        }
+        if (temp.rawContents().contains("<i>")) {
+            let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
+            strTemp.yy_textGlyphTransform = matrix
+        }
+        if (temp.rawContents().contains("<u>")) {
+            strTemp.yy_underlineStyle = NSUnderlineStyle.styleSingle
+        }
+        // 默认居左
+        if temp.rawContents().contains("text-align: left;") {
+            strTemp.yy_alignment = NSTextAlignment.left
+        }
+        if temp.rawContents().contains("text-align: center;") {
+            strTemp.yy_alignment = NSTextAlignment.center
+        }
+        if temp.rawContents().contains("text-align: right;") {
+            strTemp.yy_alignment = NSTextAlignment.right
+        }
+        
+        retMutableAttriString.append(strTemp)
+        
+        return retMutableAttriString
+    }
+}
+
 class RxSwiftViewController: BaseViewController {
 
     var textF:UITextField?
@@ -516,7 +724,9 @@ class RxSwiftViewController: BaseViewController {
         myLabel.numberOfLines = 0
 //        myLabel.font = UIFont.systemFont(ofSize: 17.0)
 //        myLabel.attributedText = mutAttrStr
-        myLabel.attributedText = convertHTML2AttriString(htmlString: htmlString!)
+//        myLabel.attributedText = convertHTML2AttriString(htmlString: htmlString!)
+        let htmlData = YKHTMLData.init(htmlString!)
+         myLabel.attributedText = htmlData.attributeString
 //        myLabel.attributedText = convertHTML2AttriString(htmlString:  "<p>测试真题试卷名称</p>")
         myLabel.isUserInteractionEnabled = true
         
@@ -527,7 +737,7 @@ class RxSwiftViewController: BaseViewController {
         
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5.0) {
-            self.textF?.text = "abcdef"
+            htmlData.blankViews[0].text = "abcdef"
         }
         
 //        print(arr)
