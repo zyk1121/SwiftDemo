@@ -90,6 +90,24 @@ class RxSwiftViewController: BaseViewController {
             // 解析当前节点数据
             // 空
             if node.rawContents().characters.count <= 8 {
+                let temp = node
+                if temp.rawContents() == nil{
+                    return retMutableAttriString
+                }
+                if (temp.rawContents().contains("<br")) {
+                    retMutableAttriString.append(NSAttributedString(string:"\n"))
+                }
+                if (temp.rawContents().hasPrefix("<")) {
+                    return retMutableAttriString
+                }
+                let tempStr = temp.allContents()
+                if (tempStr == nil) {
+                    return retMutableAttriString
+                }
+                if (tempStr!.characters.count <= 0 || tempStr! == "" || tempStr!.hasPrefix("\n")) {
+                    return retMutableAttriString
+                }
+                retMutableAttriString.append(NSAttributedString(string:tempStr!))
                 return retMutableAttriString
             }
             // 注释
@@ -110,7 +128,22 @@ class RxSwiftViewController: BaseViewController {
                 let temp = item as! HTMLNode
                 // 空
                 if temp.rawContents().characters.count <= 8 {
-                    continue
+                    if temp.rawContents() == nil{
+                        continue
+                    }
+                    if (temp.rawContents().contains("<br")) {
+                        retMutableAttriString.append(NSAttributedString(string:"\n"))
+                    }
+                    if (temp.rawContents().hasPrefix("<")) {
+                        continue
+                    }
+                    let tempStr = temp.allContents()
+                    if (tempStr == nil) {
+                        continue
+                    }
+                    if (tempStr!.characters.count <= 0 || tempStr! == "" || tempStr!.hasPrefix("\n")) {
+                        continue
+                    }
                 }
                 // 注释
                 if temp.rawContents().contains("<!--") {
@@ -131,19 +164,47 @@ class RxSwiftViewController: BaseViewController {
     }
     
     func convertHTMLImageNode2AttriString(node:HTMLNode)->NSAttributedString {
-        print(node.rawContents())
         let retMutableAttriString = NSMutableAttributedString(string: "")
         if !node.rawContents().contains("<img") {
             return retMutableAttriString
         }
-        let temp = node
-        let width:CGFloat = CGFloat((temp.getAttributeNamed("width") as NSString).floatValue)
-        let height:CGFloat = CGFloat((temp.getAttributeNamed("height") as NSString).floatValue)
+//        print(node.rawContents())
+        if node.rawContents().contains("__blank__placeholder") {
+            // 填空题（<img）,无需宽高
+//            print("填空题")
+            
+            let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+            textField.placeholder = "请输入正文"
+            textField.text = "123"
+            textField.isUserInteractionEnabled = true
+            textField.borderStyle = .roundedRect
+            textField.backgroundColor = UIColor.blue
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+//            let highlight = YYTextHighlight()
+//            highlight.tapAction = {(containerView, text, range, rect) in
+//            }
+//            attachment.yy_setTextHighlight(highlight, range: attachment.yy_rangeOfAll())
+            retMutableAttriString.append(attachment)
+        } else {
+            let temp = node
+            if !node.rawContents().contains("width") {
+                return retMutableAttriString
+            }
+            if !node.rawContents().contains("height") {
+                return retMutableAttriString
+            }
+            if !node.rawContents().contains("src") {
+                return retMutableAttriString
+            }
+            let width:CGFloat = CGFloat((temp.getAttributeNamed("width") as NSString).floatValue)
+            let height:CGFloat = CGFloat((temp.getAttributeNamed("height") as NSString).floatValue)
+            
+            let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
+            imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
+            let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+            retMutableAttriString.append(attachment)
+        }
         
-        let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
-        imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
-        let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
-        retMutableAttriString.append(attachment)
         return retMutableAttriString
     }
     
@@ -189,7 +250,7 @@ class RxSwiftViewController: BaseViewController {
         let htmlString = try? String.init(contentsOf: URL(fileURLWithPath: path!))
 //         let htmlString = "<html><body>春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。</body></html>"
         
-        /*
+        
         let attrStr = try? NSMutableAttributedString(data: (htmlString?.data(using: .unicode)!)!, options: [NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType], documentAttributes: nil)
 //        print(attrStr)
         
@@ -201,6 +262,7 @@ class RxSwiftViewController: BaseViewController {
 //        myLabel.numberOfLines = 0
 //        self.view.addSubview(myLabel)
 
+        /*
         
         
         
@@ -237,6 +299,7 @@ class RxSwiftViewController: BaseViewController {
 //        }
  
  */
+ 
 //        HTMLParser 可以研究 不错
         
 //        let tt = convertHTML2AttriString(htmlString: "<p>测试真题试卷名称</p>")
@@ -289,8 +352,8 @@ class RxSwiftViewController: BaseViewController {
                     let image = HTMImageData()
                     image.content = temp.getAttributeNamed("src")
                     image.type = HTMLType.Image
-                    image.width = temp.getAttributeNamed("width")
-                    image.height = temp.getAttributeNamed("height")
+//                    image.width = temp.getAttributeNamed("width")
+//                    image.height = temp.getAttributeNamed("height")
                     arr.append(image)
                     
                     let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
@@ -445,12 +508,14 @@ class RxSwiftViewController: BaseViewController {
         
         
         
+        
 //        mutAttrStr.yy_obliqueness = NSNumber.init(value: 0.4)
         let myLabel = YYLabel(frame: self.view.bounds)
         myLabel.numberOfLines = 0
 //        myLabel.font = UIFont.systemFont(ofSize: 17.0)
 //        myLabel.attributedText = mutAttrStr
         myLabel.attributedText = convertHTML2AttriString(htmlString: htmlString!)
+//        myLabel.attributedText = convertHTML2AttriString(htmlString:  "<p>测试真题试卷名称</p>")
         myLabel.isUserInteractionEnabled = true
         
         
