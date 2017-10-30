@@ -117,107 +117,191 @@ class RxSwiftViewController: BaseViewController {
         
         var arr:[HTMLData] = []
         
-        
-        
-        let item = inputNodes![0]
-        
-        let mutAttrStr = NSMutableAttributedString()
-        for itt in item.children() {
-            let temp = itt as! HTMLNode
-//            print(temp.rawContents())
-//            print(temp.children())
-//            print(temp.rawContents().characters.count)
-            if temp.rawContents().characters.count <= 8 {
-                continue
-            }
-            if temp.rawContents().contains("<!--") {
-                continue
-            }
-            print(temp.rawContents())
+             let mutAttrStr = NSMutableAttributedString()
+        for item in inputNodes! {
+       
             
-//            print(temp.getAttributeNamed("width"))
-//            print(temp.getAttributeNamed("src"))
-//            print(temp.allContents())
-//            print("\n")
-            if (temp.children().count > 0) {
-                let ttt = temp.children()[0] as! HTMLNode
-//                print(ttt.contents())
-//                print(ttt.children())
-            }
-            
-            let rawStr = temp.rawContents()
-            if rawStr!.contains("<img") {
-                let image = HTMImageData()
-                image.content = temp.getAttributeNamed("src")
-                image.type = HTMLType.Image
-                image.width = temp.getAttributeNamed("width")
-                image.height = temp.getAttributeNamed("height")
-                arr.append(image)
+            for itt in item.children() {
+                let temp = itt as! HTMLNode
+                //            print(temp.rawContents())
+                //            print(temp.children())
+                //            print(temp.rawContents().characters.count)
+                if temp.rawContents().characters.count <= 8 {
+                    continue
+                }
+                if temp.rawContents().contains("<!--") {
+                    continue
+                }
+                print(temp.rawContents())
                 
-                let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
-                imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
-                let attachment2 =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
-                mutAttrStr.append(attachment2)
-        
+                //            print(temp.getAttributeNamed("width"))
+                //            print(temp.getAttributeNamed("src"))
+                //            print(temp.allContents())
+                //            print("\n")
+                if (temp.children().count > 0) {
+                    let ttt = temp.children()[0] as! HTMLNode
+                    //                print(ttt.contents())
+                    //                print(ttt.children())
+                }
                 
-                        let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
-                        textField.placeholder = "请输入正文"
-                        textField.text = "22334444"
-                        textField.isUserInteractionEnabled = true
-                        textField.borderStyle = .roundedRect
-                        textField.backgroundColor = UIColor.blue
-                        let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
-                        let highlight = YYTextHighlight()
-                        highlight.tapAction = {(containerView, text, range, rect) in
-                        }
-                        attachment.yy_setTextHighlight(highlight, range: attachment.yy_rangeOfAll())
-                
-                
+                let rawStr = temp.rawContents()
+                if rawStr!.contains("<img") {
+                    let image = HTMImageData()
+                    image.content = temp.getAttributeNamed("src")
+                    image.type = HTMLType.Image
+                    image.width = temp.getAttributeNamed("width")
+                    image.height = temp.getAttributeNamed("height")
+                    arr.append(image)
+                    
+                    let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+                    imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
+                    let attachment2 =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+                    mutAttrStr.append(attachment2)
+                    
+                    
+                    let textField = UITextField(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+                    textField.placeholder = "请输入正文"
+                    textField.text = "22334444"
+                    textField.isUserInteractionEnabled = true
+                    textField.borderStyle = .roundedRect
+                    textField.backgroundColor = UIColor.blue
+                    let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: textField, contentMode: UIViewContentMode.center, attachmentSize: textField.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+                    let highlight = YYTextHighlight()
+                    highlight.tapAction = {(containerView, text, range, rect) in
+                    }
+                    attachment.yy_setTextHighlight(highlight, range: attachment.yy_rangeOfAll())
+                    
+                    
+                    
+                    mutAttrStr.append(attachment)
+                    
+                    
+                    
+                    
+                } else {
+                    let text = HTMLTextData()
+                    text.type = .Text
+                    //                print(temp.tagName())
+                    //                print(temp.contents())
+                    
+                    let str = NSMutableAttributedString(string: temp.allContents(), attributes: nil)
+                    //               str.addAttribute(NSObliquenessAttributeName, value: 1, range: NSRange.init(location: 0, length: 4))
+                    str.yy_font  = UIFont.systemFont(ofSize: 17.0)
+                    text.content = temp.allContents()
+                    if (temp.rawContents().contains("<b>")) {
+                        str.yy_font  = UIFont.boldSystemFont(ofSize: 17.0)
+                        //                    str.
+                        text.attr = text.attr | HTMLTextAttrType.bold.rawValue
+                    }
+                    if (temp.rawContents().contains("<i>")) {
+                        //                    str.yy_setAttribute(NSObliquenessAttributeName, value: 3.0, range:NSRange(location: 0,length: str.length))
+                        //                    print(str.yy_obliqueness)
+                        //                    str.yy_setObliqueness(NSNumber.init(value: 10.0), range: NSRange(location: 0,length: 4))
+                        //                    print(str.yy_obliqueness)
                         
-                        mutAttrStr.append(attachment)
+                        //                    str.yy_obliqueness = NSNumber.init(value: 0.4)
+                        //                    str.yy_textGlyphTransform = CGAffineTransform(rotationAngle: -0.05)
+                        let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
+                        str.yy_textGlyphTransform = matrix
+                        //                str.addAttribute(NSObliquenessAttributeName, value: 0.5, range: NSRange(location: 0,length: 4))
+                        text.attr =  text.attr | HTMLTextAttrType.iii.rawValue
+                    }
+                    if (temp.rawContents().contains("<u>")) {
+                        str.yy_underlineStyle = NSUnderlineStyle.styleSingle
+                        text.attr = text.attr | HTMLTextAttrType.undline.rawValue
+                    }
+                    
+                    mutAttrStr.append(str)
+                    //                arr.append(text)
+                }
                 
+            }
+            
+             mutAttrStr.append(NSMutableAttributedString(string: "\n"))
+            
+//            print( item.children().count )
+            if  item.children().count == 1 {
+                let temp = item as! HTMLNode
+                //            print(temp.rawContents())
+                //            print(temp.children())
+                //            print(temp.rawContents().characters.count)
+                if temp.rawContents().characters.count <= 8 {
+                    continue
+                }
+                if temp.rawContents().contains("<!--") {
+                    continue
+                }
+              
                 
-                
-                
-            } else {
-                let text = HTMLTextData()
-                text.type = .Text
-//                print(temp.tagName())
-//                print(temp.contents())
+              
                 
                 let str = NSMutableAttributedString(string: temp.allContents(), attributes: nil)
-//               str.addAttribute(NSObliquenessAttributeName, value: 1, range: NSRange.init(location: 0, length: 4))
-                       str.yy_font  = UIFont.systemFont(ofSize: 17.0)
-                text.content = temp.allContents()
+                //               str.addAttribute(NSObliquenessAttributeName, value: 1, range: NSRange.init(location: 0, length: 4))
+                str.yy_font  = UIFont.systemFont(ofSize: 17.0)
+//                text.content = temp.allContents()
                 if (temp.rawContents().contains("<b>")) {
                     str.yy_font  = UIFont.boldSystemFont(ofSize: 17.0)
-//                    str.
-                    text.attr = text.attr | HTMLTextAttrType.bold.rawValue
-                }
-                if (temp.rawContents().contains("<i>")) {
-//                    str.yy_setAttribute(NSObliquenessAttributeName, value: 3.0, range:NSRange(location: 0,length: str.length))
-//                    print(str.yy_obliqueness)
-//                    str.yy_setObliqueness(NSNumber.init(value: 10.0), range: NSRange(location: 0,length: 4))
-//                    print(str.yy_obliqueness)
+                    //                    str.
                     
-//                    str.yy_obliqueness = NSNumber.init(value: 0.4)
-//                    str.yy_textGlyphTransform = CGAffineTransform(rotationAngle: -0.05)
-                    let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
-                    str.yy_textGlyphTransform = matrix
-//                str.addAttribute(NSObliquenessAttributeName, value: 0.5, range: NSRange(location: 0,length: 4))
-                    text.attr =  text.attr | HTMLTextAttrType.iii.rawValue
-                }
-                if (temp.rawContents().contains("<u>")) {
-                    str.yy_underlineStyle = NSUnderlineStyle.styleSingle
-                    text.attr = text.attr | HTMLTextAttrType.undline.rawValue
                 }
                 
-                mutAttrStr.append(str)
-//                arr.append(text)
+                
+                if temp.rawContents().contains("text-align: center;") {
+                    // 居中
+                    /*
+                    var paragraphStyle = NSMutableParagraphStyle()
+                    //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                    paragraphStyle.alignment = NSTextAlignment.center
+                    attrText.append( NSMutableAttributedString(string: "\n居中显示", attributes: [NSParagraphStyleAttributeName:paragraphStyle]))
+                    
+                    
+                    var paragraphStyle2 = NSMutableParagraphStyle()
+                    //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                    paragraphStyle2.alignment = NSTextAlignment.right
+                    attrText.append( NSMutableAttributedString(string: "\n居右显示", attributes: [NSParagraphStyleAttributeName:paragraphStyle2]))*/
+                    var paragraphStyle = NSMutableParagraphStyle()
+                    //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                    paragraphStyle.alignment = NSTextAlignment.center
+                    mutAttrStr.append( NSMutableAttributedString(string: temp.allContents(), attributes: [NSParagraphStyleAttributeName:paragraphStyle]))
+                }
+                
+                
+                if temp.rawContents().contains("text-align: right;") {
+                    // 居中
+                    /*
+                     var paragraphStyle = NSMutableParagraphStyle()
+                     //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                     paragraphStyle.alignment = NSTextAlignment.center
+                     attrText.append( NSMutableAttributedString(string: "\n居中显示", attributes: [NSParagraphStyleAttributeName:paragraphStyle]))
+                     
+                     
+                     var paragraphStyle2 = NSMutableParagraphStyle()
+                     //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                     paragraphStyle2.alignment = NSTextAlignment.right
+                     attrText.append( NSMutableAttributedString(string: "\n居右显示", attributes: [NSParagraphStyleAttributeName:paragraphStyle2]))*/
+                    var paragraphStyle = NSMutableParagraphStyle()
+                    //        paragraphStyle.firstLineHeadIndent = 80.0// 首行缩近
+                    paragraphStyle.alignment = NSTextAlignment.right
+                    mutAttrStr.append( NSMutableAttributedString(string: temp.allContents(), attributes: [NSParagraphStyleAttributeName:paragraphStyle]))
+                    
+                    mutAttrStr.append(NSMutableAttributedString(string: "\n"))
+                }
+                
+                
+
+//                 mutAttrStr.append(str)
+
+            } else {
+            
             }
+            
+           
+            
+            
             
         }
         
+
         
         
         
