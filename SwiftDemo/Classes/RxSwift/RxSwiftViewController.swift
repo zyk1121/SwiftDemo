@@ -42,6 +42,143 @@ class HTMImageData: HTMLData {
 
 class RxSwiftViewController: BaseViewController {
 
+
+    // 判断是否是HTML(题库试题答案等)字符串 "<p>" 开始
+    func isHTMLString(htmlString:String)->Bool {
+        return htmlString.hasPrefix("<p>")
+    }
+    
+    // HTML转属性字符串
+    func convertHTML2AttriString(htmlString:String)->NSAttributedString {
+        if (!isHTMLString(htmlString: htmlString)) {
+            return NSAttributedString(string:htmlString)
+        }
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        guard let htmlParser = try? HTMLParser(string: htmlString),
+                let bodyNode = htmlParser.body(),
+                let inputNodes = bodyNode.findChildTags("p") as? [HTMLNode] else {
+            return retMutableAttriString
+        }
+        
+        for rootNode in inputNodes {
+            let rootStr = convertHTMLNode2AttriString(node: rootNode)
+            // 默认居左
+            if rootNode.rawContents().contains("text-align: left;") {
+                rootStr.yy_alignment = NSTextAlignment.left
+            }
+            if rootNode.rawContents().contains("text-align: center;") {
+                rootStr.yy_alignment = NSTextAlignment.center
+            }
+            if rootNode.rawContents().contains("text-align: right;") {
+                rootStr.yy_alignment = NSTextAlignment.right
+            }
+            retMutableAttriString.append(rootStr)
+            retMutableAttriString.append(NSAttributedString(string:"\n"))
+        }
+        
+        return retMutableAttriString
+    }
+    
+    // HTMLNode 2 String
+    func convertHTMLNode2AttriString(node:HTMLNode)->NSMutableAttributedString {
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        let nodeCount = node.children().count
+        if (nodeCount == 0) {
+            return retMutableAttriString
+        }
+        if nodeCount == 1 {
+            // 解析当前节点数据
+            // 空
+            if node.rawContents().characters.count <= 8 {
+                return retMutableAttriString
+            }
+            // 注释
+            if node.rawContents().contains("<!--") {
+                return retMutableAttriString
+            }
+            // 图片
+            if node.rawContents().contains("<img") {
+                let imgAttriText = convertHTMLImageNode2AttriString(node: node)
+                retMutableAttriString.append(imgAttriText)
+            } else {
+                // 文本
+                let textAttri = convertHTMLTextNode2AttriString(node: node)
+                retMutableAttriString.append(textAttri)
+            }
+        } else {
+            for item in node.children() {
+                let temp = item as! HTMLNode
+                // 空
+                if temp.rawContents().characters.count <= 8 {
+                    continue
+                }
+                // 注释
+                if temp.rawContents().contains("<!--") {
+                    continue
+                }
+                // 图片
+                if temp.rawContents().contains("<img") {
+                    let imgAttriText = convertHTMLImageNode2AttriString(node: temp)
+                    retMutableAttriString.append(imgAttriText)
+                } else {
+                    // 文本
+                    let textAttri = convertHTMLTextNode2AttriString(node: temp)
+                    retMutableAttriString.append(textAttri)
+                }
+            }
+        }
+        return retMutableAttriString
+    }
+    
+    func convertHTMLImageNode2AttriString(node:HTMLNode)->NSAttributedString {
+        print(node.rawContents())
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        if !node.rawContents().contains("<img") {
+            return retMutableAttriString
+        }
+        let temp = node
+        let width:CGFloat = CGFloat((temp.getAttributeNamed("width") as NSString).floatValue)
+        let height:CGFloat = CGFloat((temp.getAttributeNamed("height") as NSString).floatValue)
+        
+        let imageView = UIImageView.init(frame: CGRect(x: 0, y: 0, width: width, height: height))
+        imageView.sd_setImage(with: URL.init(string: temp.getAttributeNamed("src")), completed: nil)
+        let attachment =  NSMutableAttributedString.yy_attachmentString(withContent: imageView, contentMode: UIViewContentMode.center, attachmentSize: imageView.frame.size, alignTo: UIFont.systemFont(ofSize: 17.0), alignment: YYTextVerticalAlignment.center)
+        retMutableAttriString.append(attachment)
+        return retMutableAttriString
+    }
+    
+    func convertHTMLTextNode2AttriString(node:HTMLNode)->NSAttributedString {
+        let retMutableAttriString = NSMutableAttributedString(string: "")
+        let temp = node
+        let strTemp = NSMutableAttributedString(string: temp.allContents(), attributes: nil)
+        strTemp.yy_font  = UIFont.systemFont(ofSize: 17.0)
+        // 加粗、斜体、下划线
+        if (temp.rawContents().contains("<b>")) {
+            strTemp.yy_font  = UIFont.boldSystemFont(ofSize: 17.0)
+        }
+        if (temp.rawContents().contains("<i>")) {
+            let matrix = CGAffineTransform(a: 1, b: 0, c: CGFloat(tanf(15 * Float(Double.pi) / 180)), d: 1, tx: 0, ty: 0)
+            strTemp.yy_textGlyphTransform = matrix
+        }
+        if (temp.rawContents().contains("<u>")) {
+            strTemp.yy_underlineStyle = NSUnderlineStyle.styleSingle
+        }
+        // 默认居左
+        if temp.rawContents().contains("text-align: left;") {
+            strTemp.yy_alignment = NSTextAlignment.left
+        }
+        if temp.rawContents().contains("text-align: center;") {
+            strTemp.yy_alignment = NSTextAlignment.center
+        }
+        if temp.rawContents().contains("text-align: right;") {
+            strTemp.yy_alignment = NSTextAlignment.right
+        }
+        
+        retMutableAttriString.append(strTemp)
+        
+        return retMutableAttriString
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        "<html><body><h1>春晓</h1><p>春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。</p><p>注意，浏览器忽略了源代码中的排版（省略了多余的空格和换行）。</p></body></html>"
@@ -102,6 +239,9 @@ class RxSwiftViewController: BaseViewController {
  */
 //        HTMLParser 可以研究 不错
         
+//        let tt = convertHTML2AttriString(htmlString: "<p>测试真题试卷名称</p>")
+//        let ddd = convertHTML2AttriString(htmlString: htmlString!)
+        
         let parser = try? HTMLParser(string: htmlString!)
 //        let htmlBody = parser?.body()
 //        print(htmlBody)
@@ -132,7 +272,7 @@ class RxSwiftViewController: BaseViewController {
                 if temp.rawContents().contains("<!--") {
                     continue
                 }
-                print(temp.rawContents())
+//                print(temp.rawContents())
                 
                 //            print(temp.getAttributeNamed("width"))
                 //            print(temp.getAttributeNamed("src"))
@@ -309,7 +449,8 @@ class RxSwiftViewController: BaseViewController {
         let myLabel = YYLabel(frame: self.view.bounds)
         myLabel.numberOfLines = 0
 //        myLabel.font = UIFont.systemFont(ofSize: 17.0)
-        myLabel.attributedText = mutAttrStr
+//        myLabel.attributedText = mutAttrStr
+        myLabel.attributedText = convertHTML2AttriString(htmlString: htmlString!)
         myLabel.isUserInteractionEnabled = true
         
         
@@ -450,7 +591,7 @@ class RxSwiftViewController2: BaseViewController {
         let htmlString = try? String.init(contentsOf: URL(fileURLWithPath: path!))
         //         let htmlString = "<html><body>春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。</body></html>"
         let attrStr = try? NSMutableAttributedString(data: (htmlString?.data(using: .unicode)!)!, options: [NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType], documentAttributes: nil)
-        print(attrStr?.string)
+//        print(attrStr?.string)
         
         
         let myLabel = YYLabel(frame: self.view.bounds)
