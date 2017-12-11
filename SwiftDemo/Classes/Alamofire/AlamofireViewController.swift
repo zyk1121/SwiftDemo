@@ -289,6 +289,7 @@ class AlamofireViewController: BaseViewController {
                 
                 
                 let w = Mapper<Weather>().map(JSON: json)
+                print(w?.toJSON())
 //                w?.weather?.city
                 
                 /*

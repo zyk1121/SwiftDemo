@@ -16,5 +16,7 @@ target 'SwiftDemo' do
     pod 'SwiftyJSON'
     pod 'TFHpple', '~> 2.0.0'
     pod 'SDWebImage'
+    pod 'YYCache', '~> 1.0.4'
+	pod 'Protobuf', '~> 3.3.0'
 
 end

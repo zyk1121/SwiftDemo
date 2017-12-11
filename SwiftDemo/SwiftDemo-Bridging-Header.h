@@ -5,3 +5,4 @@
 #import <TFHpple/TFHpple.h>
 #import "HTMLParser.h"
 #import <SDWebImage/UIImageView+HighlightedWebCache.h>
+#import <YYCache/YYCache.h>

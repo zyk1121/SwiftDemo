@@ -12,6 +12,8 @@ import WebKit
 import CoreText
 import TFHpple
 import SnapKit
+import YYCache
+import ObjectMapper
 
 enum HTMLType {
     case Text
@@ -318,7 +320,7 @@ class YKHTMLData {
     }
 }
 
-class RxSwiftViewController: BaseViewController {
+class RxSwiftViewController3: BaseViewController {
 
     var textF:UITextField?
 
@@ -1093,3 +1095,238 @@ class TestView:UIView
     }
     
 }
+
+
+
+class RxSwiftViewController: BaseViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let home = NSHomeDirectory()
+        let docPath = "\(home)/Documents/123/abc"
+        print(docPath)
+        let cache = YYCache(path: docPath)
+//        ["weatherinfo": ["ptime": "18:00", "city": "北京", "weather": "晴", "cityid": 0]]
+        let json = ["weatherinfo": ["ptime": "18:00", "city": "北京", "weather": "晴", "cityid": 0]]
+         let w = Mapper<Weather>().map(JSON: json)
+//        print(w?.toJSONString())
+//        cache?.setObject(json as NSCoding, forKey: "abc")
+        let dd = cache?.object(forKey: "abc")
+//        print(dd)
+//         let sss = "123" as NSString
+//        print(sss.integerValue)
+//        print(sss.boolValue)
+        
+//        YKCacheManager.manager(moduleType: .course).stringValue(forKey: "exam_examid_userid")
+//        YKCacheManager.manager(moduleType: .course).boolValue(forKey: "exam_examid_userid")
+//        YKCacheManager.manager(moduleType: .course).removeObject(forKey: "exam_examid_userid")
+//        YKCacheManager.manager(moduleType: .course).setIntValue(intValue: 123, forKey: "exam_examid_userid")
+//        YKCacheManager.manager(moduleType: .course).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+        YKCacheManager.manager(moduleType: .video).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+         YKCacheManager.manager(moduleType: .course).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+         YKCacheManager.manager(moduleType: .common).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+         YKCacheManager.manager(moduleType: .community).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+         YKCacheManager.manager(moduleType: .message).setBoolValue(boolValue: true, forKey: "exam_examid_userid")
+        YKCacheManager.manager(moduleType: .course).removeObject(forKey: "exam_examid_userid")
+        let value = YKCacheManager.manager(moduleType: .course).boolValue(forKey:"exam_examid_userid")
+        print(value)
+        print("abc")
+        
+//        UserDefaults.standard.set(value: Any?, forKey: String)
+        
+//        cache?.setObject("abcdefgabcd1234rrr" as NSCoding, forKey: "abcdef")
+//        let obj  = cache?.object(forKey: "abcdef")
+//        print(obj)
+//        cache?.setValue("abcdefgabcd1234rrr", forKey: "abcdef")
+    }
+}
+
+
+
+/* 
+ 缓存模块路径Path枚举
+ common:默认缓存模块，四大缓存模块之外的通用缓存:/Home/Documents/CacheData/common/
+ community:社区缓存:/Home/Documents/CacheData/community/
+ message:消息模块缓存:/Home/Documents/CacheData/message/
+ video:下载视频相关缓存:/Home/Documents/CacheData/video/
+ course:课程题库相关缓存:/Home/Documents/CacheData/course/
+ */
+enum YKCacheModulePath:String {
+    case common     = "common"
+    case community  = "community"
+    case message    = "message"
+    case video      = "video"
+    case course     = "course"
+}
+/*
+ 说明：
+ 1、采用YYCache封装（线程安全，效率高，数据库+文件结合方式存储），参考：https://blog.ibireme.com/2015/10/26/yycache/
+ 2、对象一般要实现归档和解档或者使用下面3的方式，常用的OC类型都已经实现了归档和解档：NSNumber NSString NSArray NSDictionary等
+ 3、ObjectMapper实现的对象可以直接转成JSON或者JSONString进行数据缓存
+ 4、分模块的目的是为了减少缓存数据库或文件大小，提高缓存读写效率
+ 5、数据量较大而且更新频繁的情况下效率不高（慎用），建议特殊处理：分小数据块设计读写，或者自己实现相应逻辑
+ 6、建议用户ID作为key的一部分，比如："course_guide_userid","exam_examid_userid"等，但是用户无关的就不需要了
+ 7、系统UserDefault建议使用存储简单数据而且特别频繁的读写操作的场景，其他不建议
+ 8、使用方式：YKCacheManager.manager(moduleType: .course).object(forKey: "exam_examid_userid")
+            YKCacheManager.manager(moduleType: .course).stringValue(forKey: "exam_examid_userid")
+            YKCacheManager.manager(moduleType: .course).boolValue(forKey: "exam_examid_userid")
+            YKCacheManager.manager(moduleType: .course).removeObject(forKey: "exam_examid_userid")
+ */
+class YKCacheManager: NSObject {
+    // 默认缓存定义
+    static var commonCache:YKCacheManager?
+    static var communityCache:YKCacheManager?
+    static var messageCache:YKCacheManager?
+    static var videoCache:YKCacheManager?
+    static var courseCache:YKCacheManager?
+    static var defaultCache:YKCacheManager = YKCacheManager(path: "default")
+    // 常量cache manager
+    class func manager(moduleType:YKCacheModulePath = .common) -> YKCacheManager {
+        switch moduleType {
+        case .common:
+            if commonCache == nil {
+                commonCache = YKCacheManager(path: moduleType.rawValue)
+            }
+            if commonCache != nil {
+                return commonCache!
+            }
+            break
+        case .community:
+            if communityCache == nil {
+                communityCache = YKCacheManager(path: moduleType.rawValue)
+            }
+            if communityCache != nil {
+                return communityCache!
+            }
+            break
+        case .message:
+            if messageCache == nil {
+                messageCache = YKCacheManager(path: moduleType.rawValue)
+            }
+            if messageCache != nil {
+                return messageCache!
+            }
+            break
+        case .video:
+            if videoCache == nil {
+                videoCache = YKCacheManager(path: moduleType.rawValue)
+            }
+            if videoCache != nil {
+                return videoCache!
+            }
+            break
+        case .course:
+            if courseCache == nil {
+                courseCache = YKCacheManager(path: moduleType.rawValue)
+            }
+            if courseCache != nil {
+                return courseCache!
+            }
+            break
+        }
+        return defaultCache
+    }
+    
+    private var cache:YYCache?
+    private var modulePath:String = "default"
+    convenience init(path:String) {
+        self.init()
+        self.modulePath = path
+        self.setupCache()
+    }
+    
+    override init() {
+        super.init()
+    }
+    
+    // 设置YYCache初始化
+    func setupCache()
+    {
+        let home = NSHomeDirectory()
+        let cachePath = "\(home)/Documents/CacheData/\(self.modulePath)"
+        cache = YYCache(path: cachePath)
+    }
+    
+    // NSCoding对象
+    func setObject(object:NSCoding?, forKey key:String) {
+        cache?.setObject(object, forKey: key)
+    }
+    
+    func object(forKey key: String) -> NSCoding?
+    {
+        return cache?.object(forKey: key)
+    }
+    
+    // String
+    func setStringValue(strObj:String, forKey key:String) {
+        cache?.setObject(strObj as NSCoding, forKey: key)
+    }
+    
+    func stringValue(forKey key:String)->String? {
+        return cache?.object(forKey: key) as? String
+    }
+    
+    // Bool
+    func setBoolValue(boolValue:Bool, forKey key:String)
+    {
+        let value = NSNumber(value: boolValue)
+        cache?.setObject(value, forKey: key)
+    }
+    
+    func boolValue(forKey key:String)->Bool? {
+        if let value = cache?.object(forKey: key) as? NSNumber {
+            return value.boolValue
+        }
+        return nil
+    }
+    
+    // Int
+    func setIntValue(intValue:Int, forKey key:String)
+    {
+        let value = NSNumber(value: intValue)
+        cache?.setObject(value, forKey: key)
+    }
+    
+    func intValue(forKey key:String)->Int? {
+        if let value = cache?.object(forKey: key) as? NSNumber {
+            return value.intValue
+        }
+        return nil
+    }
+    
+    // Float
+    func setFloatValue(floatValue:Float, forKey key:String)
+    {
+        let value = NSNumber(value: floatValue)
+        cache?.setObject(value, forKey: key)
+    }
+    
+    func floatValue(forKey key:String)->Float? {
+        if let value = cache?.object(forKey: key) as? NSNumber {
+            return value.floatValue
+        }
+        return nil
+    }
+    
+    // Double
+    func setDoubleValue(doubleValue:Double, forKey key:String)
+    {
+        let value = NSNumber(value: doubleValue)
+        cache?.setObject(value, forKey: key)
+    }
+    
+    func doubleValue(forKey key:String)->Double? {
+        if let value = cache?.object(forKey: key) as? NSNumber {
+            return value.doubleValue
+        }
+        return nil
+    }
+    
+    // remove object
+    func removeObject(forKey key: String, with block: ((String) -> Swift.Void)? = nil)
+    {
+        cache?.removeObject(forKey: key, with: block)
+    }
+}
+
