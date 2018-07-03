@@ -18,5 +18,6 @@ target 'SwiftDemo' do
     pod 'SDWebImage'
     pod 'YYCache', '~> 1.0.4'
 	pod 'Protobuf', '~> 3.3.0'
+    pod 'OHHTTPStubs/Swift'
 
 end

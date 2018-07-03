@@ -1,0 +1,12 @@
+{
+    "weatherinfo" : {
+        "city" : "北京",
+        "temp1" : "-2℃",
+        "temp2" : "16℃",
+        "img1" : "n0.gif",
+        "cityid" : "101010100",
+        "img2" : "d0.gif",
+        "ptime" : "18:00",
+        "weather" : "晴334"
+    }
+}
